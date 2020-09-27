@@ -18,16 +18,20 @@
       </div>
     </li>
   </ul>
+  <ul class="navbar-nav ml-auto" *ngIf="isConnected()">
+    <li class="nav-link text-primary">Connected: {{ isConnectedUser() }}</li>
+  </ul>
   <ul class="navbar-nav ml-auto">
-    <li class="nav-item">
-      <a style="cursor: pointer" class="nav-link" routerLink="/login">Login</a>
+    <li class="nav-item" *ngIf="!isConnected()">
+      <a style="cursor: pointer" class="nav-link text-primary" routerLink="/login">Login</a>
     </li>
+    <li *ngIf="isConnected()" style="cursor: pointer" class="nav-link text-primary" (click)="seDeconnecter()">Logout</li>
   </ul>
 </nav>
 
 <div class="row">
-  <div class="col-md-4">
-    <app-comptes></app-comptes>
+  <div class="col-md-4" *ngIf="isConnected()">
+    <app-client></app-client>
   </div>
   <div class="col-md-8">
     <router-outlet></router-outlet>
