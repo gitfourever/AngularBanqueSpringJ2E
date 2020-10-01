@@ -1,9 +1,21 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClientService {
 
-  constructor() { }
+  private host = 'http://localhost:8080/';
+
+  constructor(private http: HttpClient) { }
+
+
+  getClientShort(email) {
+      return this.http.get(this.host + 'apiRest/client/' + email);
+  }
+
+  getClientFull(idClient) {
+      return this.http.get(this.host + 'clients/' + idClient);
+  }
 }

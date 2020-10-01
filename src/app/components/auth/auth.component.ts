@@ -9,7 +9,7 @@ import {Router} from '@angular/router';
 })
 export class AuthComponent implements OnInit {
 
-  username = 'client001@email.com';
+  emailClient = 'client001@email.com';
   password = '1234';
 
   constructor(private auth: AuthentificationService, private router: Router) { }
@@ -17,10 +17,10 @@ export class AuthComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onLogin(dataUser: any): void {
+  onLogin(dataUser) {
     this.auth.onLogin(dataUser).subscribe(value => {
       this.auth.tokenJWTsave(value.headers.get('authorization'));
-      this.router.navigateByUrl('/comptes', { skipLocationChange: true}); // .then(r => {console.log(r)});
+      this.router.navigateByUrl('/operations', { skipLocationChange: true});
     }, error => {
       console.log(error);
     });

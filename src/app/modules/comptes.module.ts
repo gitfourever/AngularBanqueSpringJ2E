@@ -7,4 +7,15 @@ import { CommonModule } from '@angular/common';
     CommonModule
   ]
 })
-export class ComptesModule { }
+export class ComptesModule {
+
+  numCte: string;
+
+  typeCompte: string;
+
+  solde: number;
+
+  dataCreation: Date;
+
+  operations: object;
+}

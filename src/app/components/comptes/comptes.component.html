@@ -1,3 +1,20 @@
-<p>
-  comptes works!
-</p>
+<div class="container">
+  <div class="card card-body">
+<!--    <h3 class="card-header">Client: {{ authService.isConnected().username.split('@')[0].toUpperCase() }}</h3>-->
+    <h3 class="card-header" *ngIf="clientOnline">Client: {{ clientOnline['nomClient'].toUpperCase() }}</h3>
+    <div class="row card-header">
+      <ul class="list-group">
+        <li class="list-group-item bg-info" style="cursor: pointer">Gestion des comptes</li>
+        <select name="compte" id="compte" *ngIf="comptesClient">
+          <option value="cte" *ngFor="let cte of comptesClient">
+            {{cte.numCte | json}}
+          </option>
+        </select>
+        <li class="list-group-item" style="cursor: pointer" (click)="addCompte()">Créer un compte</li>
+        <li class="list-group-item bg-danger" style="cursor: pointer" (click)="deleteCompte()">Supprimer un compte</li>
+        <li class="list-group-item bg-dark"></li>
+        <li class="list-group-item bg-warning" style="cursor: pointer" (click)="updatePassClientOnline()">Changer de password</li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import jwt_decode from 'jwt-decode';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +20,7 @@ export class AuthentificationService {
   };
   private clientOnlineData = {
     username: null,
+    emailClient: null,
     roles: null,
     expiration: null,
     connected: false
@@ -27,9 +28,15 @@ export class AuthentificationService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  onLogin(dataUser): Observable<any> {
-    return this.http.post(this.host + 'login', dataUser, {observe: 'response'});
+  onLogin(dataUser) {
+    return this.http.post<any>(this.host + 'login', dataUser, {observe: 'response'})
+      .pipe(map(value => {
+        return value;
+      }));
   }
+
+  // getClientShort(email) { return this.http.get(this.host + 'apiRest/client/' + email); }
+  // getClientFull(idClient) { return this.http.get(this.host + 'clients/' + idClient); }
 
   tokenJWTsave(token: any) {
     this.tokenDataJWT.tokenCoded = token.substr(0, 30) + this.tokenDataJWT.phrase001 +
@@ -47,8 +54,10 @@ export class AuthentificationService {
         .replace(this.tokenDataJWT.phrase003, '');
 
       const decodeJWT = jwt_decode(this.tokenDataJWT.tokenDecoded);
+      // console.log(decodeJWT);
 
       this.clientOnlineData.username = decodeJWT['sub'];
+      this.clientOnlineData.emailClient = decodeJWT['emailClient'];
       this.clientOnlineData.roles = decodeJWT['roles'];
       this.clientOnlineData.expiration = decodeJWT['exp'];
       this.clientOnlineData.connected = true;

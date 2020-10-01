@@ -18,6 +18,7 @@ const appRoutes: Routes = [
   { path: 'login', component: AuthComponent },
   { path: 'client', component: ClientComponent },
   { path: 'comptes', component: ComptesComponent },
+  { path: 'comptes/:params', component: ComptesComponent },
   { path: 'operations', component: OperationsComponent },
   { path: '**', redirectTo: '/login', pathMatch: 'full'}
 ];
