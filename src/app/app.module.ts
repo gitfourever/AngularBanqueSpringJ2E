@@ -12,13 +12,15 @@ import { ClientService } from './services/client.service';
 import { ComptesComponent } from './components/comptes/comptes.component';
 import { OperationsComponent } from './components/operations/operations.component';
 import { AuthComponent } from './components/auth/auth.component';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { NewCompteComponent } from './components/comptes/new-compte/new-compte.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: AuthComponent },
   { path: 'client', component: ClientComponent },
   { path: 'comptes', component: ComptesComponent },
   { path: 'comptes/:params', component: ComptesComponent },
+  { path: 'newCompte/:params', component: NewCompteComponent },
   { path: 'operations', component: OperationsComponent },
   { path: '**', redirectTo: '/login', pathMatch: 'full'}
 ];
@@ -29,15 +31,18 @@ const appRoutes: Routes = [
     ClientComponent,
     ComptesComponent,
     OperationsComponent,
-    AuthComponent
+    AuthComponent,
+    NewCompteComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    RouterModule.forRoot(appRoutes),
-    FormsModule
+    RouterModule.forRoot(appRoutes, {onSameUrlNavigation: 'reload'}),
+    FormsModule,
+    ReactiveFormsModule
   ],
+  exports: [RouterModule],
   providers: [ComptesService, OperationsService, ClientService],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="container container-fluid">
+    <div class="card">
+      <div class="card card-header"><h3>Ajout d'un nouveau compte</h3></div>
+      <div class="card card-body">
+        <form #f="ngForm" (ngSubmit)="addCompte(f.value)">
+          <div>
+            <select name="typeCte" (change)="typeCompte(f.value)" ngModel>
+              <option value="op">--- choisis une option ---</option>
+              <option value="CC">Compte courant</option>
+              <option value="CE">Compte Epargne</option>
+            </select>
+          </div>
+          <div *ngIf="showForm">
+            <div class="form-group">
+              <label for="solde" class="col-form-label">Solde</label>
+              <input type="number" name="solde" id="solde" ngModel class="form-control" required="required">
+            </div>
+            <div *ngIf="showDecouvert">
+              <div class="form-group">
+                <label for="decouvert" class="col-form-label">Decouvert</label>
+                <input type="number" name="decouvert" id="decouvert" ngModel class="form-control" required="required">
+              </div>
+            </div>
+            <div *ngIf="showTaux">
+              <div class="form-group">
+                <label for="taux" class="col-form-label">Taux d'intéret</label>
+                <input type="number" name="taux" id="taux" ngModel class="form-control" required="required">
+              </div>
+            </div>
+            <div><input type="hidden" [ngModel]="idClient" name="idClient" /></div>
+            <button class="btn btn-primary btn-block" type="submit" [disabled]="f.invalid">Add compte</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

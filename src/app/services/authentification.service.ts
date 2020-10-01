@@ -14,9 +14,7 @@ export class AuthentificationService {
     tokenOriginal: null,
     tokenCoded: null,
     tokenDecoded: null,
-    phrase001: 'jfsDFr_lSjTGg-DGe42.1sdfBds', // this.randomPhrase(17), // Math.random().toString(36), // .substr(17),
-    phrase002: 'sdfGT-ezrDSD4_52sfdf_83qZS.', // this.randomPhrase(17), // Math.random().toString(36), // .slice(5),
-    phrase003: 'dsfd_dff.651ds-sezGhHJes.fs' // this.randomPhrase(17), // Math.random().toString(36), // .substring(2, 7)
+    phrase001: 'dsfd_dff.651ds-sezGhHJes.fsjfsDFr_lSjTGg-DGe42.1sdfBdssdfGT-ezrDSD4_52sfdf_83qZS.'
   };
   private clientOnlineData = {
     username: null,
@@ -39,9 +37,8 @@ export class AuthentificationService {
   // getClientFull(idClient) { return this.http.get(this.host + 'clients/' + idClient); }
 
   tokenJWTsave(token: any) {
-    this.tokenDataJWT.tokenCoded = token.substr(0, 30) + this.tokenDataJWT.phrase001 +
-      token.substr(30, 70) + this.tokenDataJWT.phrase002 +
-      token.substr(100, 170) + this.tokenDataJWT.phrase003 + token.substr(170);
+    // console.log(token);
+    this.tokenDataJWT.tokenCoded = token.substr(0, 63) + this.tokenDataJWT.phrase001 + token.substr(63);
     localStorage.setItem('tokenStorage', btoa(this.tokenDataJWT.tokenCoded));
   }
 
@@ -49,9 +46,7 @@ export class AuthentificationService {
     if (localStorage.getItem('tokenStorage') !== null) {
       const storage = atob(localStorage.getItem('tokenStorage'));
       this.tokenDataJWT.tokenDecoded = storage
-        .replace(this.tokenDataJWT.phrase001, '')
-        .replace(this.tokenDataJWT.phrase002, '')
-        .replace(this.tokenDataJWT.phrase003, '');
+        .replace(this.tokenDataJWT.phrase001, '');
 
       const decodeJWT = jwt_decode(this.tokenDataJWT.tokenDecoded);
       // console.log(decodeJWT);
@@ -62,6 +57,11 @@ export class AuthentificationService {
       this.clientOnlineData.expiration = decodeJWT['exp'];
       this.clientOnlineData.connected = true;
     }
+  }
+
+  getTokenStorage() {
+    this.tokenJWTload();
+    return this.tokenDataJWT.tokenDecoded;
   }
 
   isConnected() {

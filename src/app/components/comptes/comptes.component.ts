@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {ComptesService} from '../../services/comptes.service';
 import {AuthentificationService} from '../../services/authentification.service';
 import {ClientService} from '../../services/client.service';
+import {logger} from 'codelyzer/util/logger';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-comptes',
@@ -15,7 +17,8 @@ export class ComptesComponent implements OnInit {
 
   constructor(private compteService: ComptesService,
               private clientService: ClientService,
-              private authService: AuthentificationService
+              private authService: AuthentificationService,
+              private router: Router
   ) { }
 
    ngOnInit() {
@@ -23,8 +26,10 @@ export class ComptesComponent implements OnInit {
   }
 
   getClient() {
-    this.clientService.getClientShort(this.authService.isConnected().username).subscribe(value => {
-      this.clientService.getClientFull(value['idClient']).subscribe(client => {
+    const emailClient = this.authService.isConnected().username;
+    this.clientService.getClientShort(emailClient).subscribe(value => {
+      const idClient = value['idClient'];
+      this.clientService.getClientFull(idClient).subscribe(client => {
         this.clientOnline = client;
         this.getComptes();
       }, error => {
@@ -45,14 +50,8 @@ export class ComptesComponent implements OnInit {
     });
   }
 
-
-
-  // ************************************************ //
-  // continuer avec les suivants ...
-  // ************************************************ //
-
-  addCompte() {
-
+  newCompte() {
+    this.router.navigateByUrl('/newCompte/' + btoa(JSON.stringify(this.clientOnline.idClient)), {skipLocationChange: true});
   }
 
   deleteCompte() {

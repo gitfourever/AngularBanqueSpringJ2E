@@ -12,10 +12,10 @@ export class ClientService {
 
 
   getClientShort(email) {
-      return this.http.get(this.host + 'apiRest/client/' + email);
+      return this.http.get(this.host + 'apiRest/clientByEmail/' + email);
   }
 
   getClientFull(idClient) {
-      return this.http.get(this.host + 'clients/' + idClient);
+      return this.http.get(this.host + 'apiRest/clientById/' + idClient);
   }
 }
