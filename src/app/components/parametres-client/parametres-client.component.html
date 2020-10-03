@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="container container-build col-md-7 col-lg-7">
+    <div class="card">
+      <div class="card card-body" *ngIf="clientOnline">
+        <div class="card card-header">
+          <h3>Changement de password</h3>
+        </div>
+        <form #f="ngForm" (ngSubmit)="updatePassword(f.value)">
+          <div *ngIf="messageError">
+            <h4 class="alert-warning">{{ messageError }}</h4>
+          </div>
+          <div class="form-group">
+            <label for="idClient" class="col-form-label">idClient</label>
+            <input type="text" name="idClient" id="idClient" [ngModel]="clientOnline.idClientOnline" class="form-control" readOnly="readonly">
+          </div>
+          <div class="form-group">
+            <label for="emailClient" class="col-form-label">Email client</label>
+            <input type="text" name="emailClient" id="emailClient" [ngModel]="clientOnline.emailClient" class="form-control" readOnly="readonly">
+          </div>
+          <div class="form-group">
+            <label for="passwordOld" class="col-form-label">Ancien password</label>
+            <input type="text" name="passwordOld" id="passwordOld" ngModel class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="passwordNew" class="col-form-label">Nouveau password</label>
+            <input type="text" name="passwordNew" id="passwordNew" ngModel class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="repasswordNew" class="col-form-label">Confirmation de password</label>
+            <input type="text" name="repasswordNew" id="repasswordNew" ngModel class="form-control" required>
+          </div>
+          <div>
+            <button type="submit" name="submit" class="btn btn-block btn-primary" [disabled]="f.invalid">Update password</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

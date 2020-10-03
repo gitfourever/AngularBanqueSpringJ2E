@@ -8,13 +8,14 @@
     </li>
 
     <!-- Dropdown -->
-    <li class="nav-item dropdown">
+    <li class="nav-item dropdown" *ngIf="isConnected()">
       <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
         Client
       </a>
       <div class="dropdown-menu">
-        <a class="dropdown-item" routerLink="/comptes">Comptes</a>
-        <a class="dropdown-item" routerLink="/operations">Operations</a>
+        <a class="dropdown-item" routerLink="/comptes" routerLinkActive="active">Comptes</a>
+        <a class="dropdown-item" routerLink="/operations" routerLinkActive="active">Operations</a>
+        <a class="dropdown-item" (click)="goToParameters()" routerLinkActive="active">Changer password</a>
       </div>
     </li>
   </ul>

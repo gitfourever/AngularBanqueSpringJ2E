@@ -14,6 +14,8 @@ import { OperationsComponent } from './components/operations/operations.componen
 import { AuthComponent } from './components/auth/auth.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { NewCompteComponent } from './components/comptes/new-compte/new-compte.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { ParametresClientComponent } from './components/parametres-client/parametres-client.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: AuthComponent },
@@ -22,7 +24,10 @@ const appRoutes: Routes = [
   { path: 'comptes/:params', component: ComptesComponent },
   { path: 'newCompte/:params', component: NewCompteComponent },
   { path: 'operations', component: OperationsComponent },
-  { path: '**', redirectTo: '/login', pathMatch: 'full'}
+  { path: 'parametersClient', component: ParametresClientComponent },
+  { path: 'parametersClient/:params', component: ParametresClientComponent },
+  { path: 'pageNotFound', component: PageNotFoundComponent },
+  { path: '**', redirectTo: '/pageNotFound', pathMatch: 'full'}
 ];
 
 @NgModule({
@@ -32,7 +37,9 @@ const appRoutes: Routes = [
     ComptesComponent,
     OperationsComponent,
     AuthComponent,
-    NewCompteComponent
+    NewCompteComponent,
+    PageNotFoundComponent,
+    ParametresClientComponent
   ],
   imports: [
     BrowserModule,

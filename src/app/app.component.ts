@@ -33,4 +33,10 @@ export class AppComponent {
   isConnectedUser() {
     return this.authService.isConnected().username;
   }
+
+  goToParameters() {
+    const idClient = btoa(JSON.stringify(this.authService.isConnected().emailClient));
+    // console.log(idClient);
+    this.router.navigateByUrl('/parametersClient/' + idClient, { skipLocationChange: true});
+  }
 }
