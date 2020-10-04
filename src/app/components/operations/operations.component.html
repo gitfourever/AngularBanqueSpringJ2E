@@ -1,3 +1,32 @@
-<p>
-  operations works!
-</p>
+<div class="container">
+  <div class="container container-fluid">
+    <div class="card">
+      <div class="card card-body" *ngIf="compteData">
+        <div class="card card-header bg-primary"> Titulaire compte: {{ nomClient.toUpperCase() }}</div>
+          <ul class="list-group">
+            Type de compte <a href="#" class="list-group-item list-group-item-action text-info"> {{ compteData['typeCte'] | json}} </a>
+            Numéro de compte <li class="list-group-item"> {{ compteData['numCte'] | json}} </li>
+            Date de création <li class="list-group-item"> {{ compteData['dateCreation'] | date: 'short' | json }} </li>
+            Solde <li class="list-group-item" [ngClass]="compteData['solde'] > 0 ? 'text-success' : 'text-danger'"> {{ compteData['solde'] | number : '0.2-2' | json}} </li>
+            Taux/decouvert <li class="list-group-item"> {{ compteData['typeCte'] === 'CE' ? compteData['taux'] : compteData['decouvert'] | number : '0.2-2'| json }} </li>
+          </ul>
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <button type="button" (click)="addOperation()" name="verser" value="VE" class="btn btn-primary">Verser</button>
+          <button type="button" (click)="addOperation()" name="retirer" value="RE" class="btn btn-danger">Retirer</button>
+          <button type="button" (click)="addOperation()" name="virement" value="VI" class="btn btn-primary">Virement</button>
+        </div>
+
+<!--        New operation-->
+        <div *ngIf="newOperation">
+          <h3>New operation: </h3>
+          <button type="button" (click)="cancelOperation()" class="btn btn-info">Cancel</button>
+        </div>
+
+
+
+<!--        Extrait de compte-->
+
+      </div>
+    </div>
+  </div>
+</div>

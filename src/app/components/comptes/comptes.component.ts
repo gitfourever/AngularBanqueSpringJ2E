@@ -13,6 +13,7 @@ import {Router} from '@angular/router';
 export class ComptesComponent implements OnInit {
 
   private clientOnline: any;
+  private deletedCompte = false;
   private comptesClient: any;
 
   constructor(private compteService: ComptesService,
@@ -54,14 +55,24 @@ export class ComptesComponent implements OnInit {
     this.router.navigateByUrl('/newCompte/' + btoa(JSON.stringify(this.clientOnline.idClient)), {skipLocationChange: true});
   }
 
-
-
-
-  deleteCompte() {
-
+  selectCompteOperations(numCte) {
+    // console.log(this.clientOnline);
+    // console.log(numCte['value']);
+    this.router.navigateByUrl('/operations/' + btoa(JSON.stringify({
+      numCte: numCte['value'],
+      idClient: this.clientOnline.idClient,
+      nomClient: this.clientOnline.nomClient} )));
   }
 
-  updatePassClientOnline() {
+  selectCompteDeleted() { this.deletedCompte = true; }
+  cancelDeletedCompte() { this.deletedCompte = false; }
 
+  deleteCompte(numCte) {
+    console.log(numCte);
+    // this.compteService.compte(numCte).subscribe(value => {
+    //   console.log(value);
+    // }, error => {
+    //   console.log(error);
+    // });
   }
 }

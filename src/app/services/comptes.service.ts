@@ -13,6 +13,10 @@ export class ComptesService {
               private authService: AuthentificationService
   ) { }
 
+  compte(numCte) {
+    return this.http.get(this.host + 'apiRest/compte/' + numCte);
+  }
+
   comptes(hrefCte) {
     return this.http.get(this.host + hrefCte);
   }

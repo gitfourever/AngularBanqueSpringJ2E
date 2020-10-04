@@ -24,6 +24,7 @@ const appRoutes: Routes = [
   { path: 'comptes/:params', component: ComptesComponent },
   { path: 'newCompte/:params', component: NewCompteComponent },
   { path: 'operations', component: OperationsComponent },
+  { path: 'operations/:params', component: OperationsComponent },
   { path: 'parametersClient', component: ParametresClientComponent },
   { path: 'parametersClient/:params', component: ParametresClientComponent },
   { path: 'pageNotFound', component: PageNotFoundComponent },

@@ -10,7 +10,7 @@ import {Router} from '@angular/router';
 export class AuthComponent implements OnInit {
 
   emailClient = 'client001@email.com';
-  password = '1234';
+  password = '4321';
   private messageErreur = undefined;
 
   constructor(private auth: AuthentificationService, private router: Router) { }

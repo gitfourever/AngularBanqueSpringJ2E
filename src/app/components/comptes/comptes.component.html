@@ -1,17 +1,34 @@
 <div class="container">
   <div class="card card-body">
-<!--    <h3 class="card-header">Client: {{ authService.isConnected().username.split('@')[0].toUpperCase() }}</h3>-->
     <h3 class="card-header" *ngIf="clientOnline">Client: {{ clientOnline['nomClient'].toUpperCase() }}</h3>
     <div class="row card-header">
       <ul class="list-group">
+
+
         <li class="list-group-item bg-info" style="cursor: pointer">Gestion des comptes</li>
-        <select name="compte" id="compte" *ngIf="comptesClient">
-          <option value="cte" *ngFor="let cte of comptesClient" title="Click pour voir les operations de ce compte">
-            {{cte.typeCte + ' - ' + cte.numCte | json}}
+        <select *ngIf="comptesClient" (change)="selectCompteOperations($event.target)">
+          <option value="">Choisis un compte</option>
+          <option value="{{cte.numCte}}" *ngFor="let cte of comptesClient" title="Click pour voir les operations de ce compte">
+            {{cte.typeCte + ' - ' + cte.numCte}}
           </option>
         </select>
+
+
         <li class="list-group-item" style="cursor: pointer" (click)="newCompte()">Créer un compte</li>
-        <li class="list-group-item bg-danger" style="cursor: pointer" (click)="deleteCompte()">Supprimer un compte</li>
+        <li class="list-group-item bg-danger" style="cursor: pointer" (click)="selectCompteDeleted()">Supprimer un compte</li>
+
+
+        <li class="list-group-item" *ngIf="deletedCompte">
+          <select (ngModelChange)="deleteCompte($event)" ngModel>
+            <option value="">Choisis un compte</option>
+            <option [value]="cte.numCte" *ngFor="let cte of comptesClient" title="Click sur ce compte pour le supprimer">
+              <a (change)="deleteCompte(cte.numCte)">{{cte.typeCte + ' - ' + cte.numCte}}</a>
+            </option>
+          </select>
+          <button (click)="cancelDeletedCompte()" class="btn btn-primary btn-block" type="button">Cancel</button>
+        </li>
+
+
         <li class="list-group-item bg-dark"></li>
       </ul>
     </div>
