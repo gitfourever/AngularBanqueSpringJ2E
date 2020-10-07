@@ -17,16 +17,16 @@ export class ClientService {
 
   getClientShort(email) {
     // console.log(email);
-    return this.http.get(this.host + 'apiRest/clientByEmail/' + email);
+    return this.http.get(this.host + 'apiRest/client/clientByEmail/' + email);
   }
 
   getClientFull(idClient) {
-    return this.http.get(this.host + 'apiRest/clientById/' + idClient);
+    return this.http.get(this.host + 'apiRest/client/clientById/' + idClient);
   }
 
   getClientOnline(email) {
     // console.log(JSON.stringify({email: email}));
-    return this.http.get(this.host + 'apiRest/getClientOnline/' + email);
+    return this.http.get(this.host + 'apiRest/clientOnline/' + email);
   }
 
   updatePasswordClientOnline(clientOnlineData) {

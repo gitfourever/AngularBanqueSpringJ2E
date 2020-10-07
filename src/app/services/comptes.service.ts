@@ -17,13 +17,16 @@ export class ComptesService {
     return this.http.get(this.host + 'apiRest/compte/' + numCte);
   }
 
-  comptes(hrefCte) {
+  comptesBy_href(hrefCte) {
     return this.http.get(this.host + hrefCte);
   }
 
+  comptesBy_ID(idClient) {
+    return this.http.get(this.host + 'apiRest/compte/comptesClient/' + idClient);
+  }
+
   addCompte(cteData) {
-    // console.log(cteData);
     const token = this.authService.getTokenStorage();
-    return this.http.post(this.host + 'apiRest/compte/', cteData, {observe: 'response', headers: new HttpHeaders({Authorization: token})});
+    return this.http.post(this.host + 'apiRest/compte/addCte/', cteData, {headers: new HttpHeaders({Authorization: token})});
   }
 }

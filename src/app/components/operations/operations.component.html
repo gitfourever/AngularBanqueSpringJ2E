@@ -1,32 +1,121 @@
 <div class="container">
   <div class="container container-fluid">
     <div class="card">
-      <div class="card card-body" *ngIf="compteData">
-        <div class="card card-header bg-primary"> Titulaire compte: {{ nomClient.toUpperCase() }}</div>
-          <ul class="list-group">
-            Type de compte <a href="#" class="list-group-item list-group-item-action text-info"> {{ compteData['typeCte'] | json}} </a>
-            Numéro de compte <li class="list-group-item"> {{ compteData['numCte'] | json}} </li>
-            Date de création <li class="list-group-item"> {{ compteData['dateCreation'] | date: 'short' | json }} </li>
-            Solde <li class="list-group-item" [ngClass]="compteData['solde'] > 0 ? 'text-success' : 'text-danger'"> {{ compteData['solde'] | number : '0.2-2' | json}} </li>
-            Taux/decouvert <li class="list-group-item"> {{ compteData['typeCte'] === 'CE' ? compteData['taux'] : compteData['decouvert'] | number : '0.2-2'| json }} </li>
-          </ul>
+      <div class="card card-body" *ngIf="client.compte.compteData">
+        <div class="card card-header bg-light"> Titulaire compte: {{ client.nomClient.toUpperCase() }}</div>
+          <div class="container">
+            <div class="row row-cols-4 align-items-center text-info">
+              <div class="col-auto">{{ client.compte.compteData['typeCte'] }} {{ client.compte.compteData['numCte'] }}</div>
+              <div class="col-auto">{{ client.compte.compteData['dateCreation'] | date : 'short' }}</div>
+              <div class="col-auto">{{ client.compte.compteData['solde'] }}</div>
+              <div class="col-auto">{{ client.compte.compteData['typeCte'] === 'CE' ? client.compte.compteData['taux'] : client.compte.compteData['decouvert'] | number : '1.0-2'| json }}</div>
+            </div>
+          </div>
+
+        <button type="button" (click)="getOperations()" name="verser" class="btn btn-primary">Operations</button>
         <div class="btn-group" role="group" aria-label="Basic example">
-          <button type="button" (click)="addOperation()" name="verser" value="VE" class="btn btn-primary">Verser</button>
-          <button type="button" (click)="addOperation()" name="retirer" value="RE" class="btn btn-danger">Retirer</button>
-          <button type="button" (click)="addOperation()" name="virement" value="VI" class="btn btn-primary">Virement</button>
+          <button type="button" (click)="typeOperation($event.target)" name="verser" value="VE" class="btn btn-secondary">Verser</button>
+          <button type="button" (click)="typeOperation($event.target)" name="retirer" value="RE" class="btn btn-danger">Retirer</button>
+          <button type="button" (click)="typeOperation($event.target)" name="virement" value="VI" class="btn btn-secondary">Virement</button>
         </div>
 
-<!--        New operation-->
-        <div *ngIf="newOperation">
-          <h3>New operation: </h3>
-          <button type="button" (click)="cancelOperation()" class="btn btn-info">Cancel</button>
+                                              <!-- Nouvelles operations -->
+        <!-- operations des versements et retraits -->
+        <div *ngIf="client.booleans.operVerRet">
+          <form #fOp="ngForm" (ngSubmit)="addOperation(fOp.value)">
+            <div class="form-group">
+              <label for="montant" class="col-form-label">Montant</label>
+              <input type="text" name="montant" id="montant" ngModel class="form-control" required>
+            </div>
+            <div class="form-group">
+              <input type="hidden" name="typeOp" id="typeOp" value="{{ client.operations.typeOp }}">
+              <input type="submit" id="operer" class="btn btn-block btn-primary" [disabled]="fOp.invalid">
+              <input type="button" (click)="cancelOperation()" class="btn btn-warning btn-block" value="Cancel" />
+            </div>
+          </form>
         </div>
-
-
-
-<!--        Extrait de compte-->
-
       </div>
+
+      <!-- Operations des virements (comptes propres)-->
+      <div *ngIf="client.booleans.operVirement">
+        <form #f="ngForm" (ngSubmit)="addOperation(f.value)">
+          <div *ngIf="client.operations.errorMessage !== ''">
+            <h3 class="bg-warning text-danger">{{ client.operations.errorMessage }}</h3>
+          </div>
+          <div class="form-group">
+            <label for="numCte01" class="col-form-label">Compte émetteur</label>
+            <select name="numCte01" id="numCte01" class="form-control" ngModel required>
+              <option value="{{ cte.numCte }}" *ngFor="let cte of client.compte.ctesClient">{{ cte.typeCte + cte.numCte }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="numCte02" class="col-form-label">Compte bénéficiaire</label>
+            <select name="numCte02" id="numCte02" class="form-control" ngModel required>
+              <option value="{{ cte.numCte }}" *ngFor="let cte of client.compte.ctesClient">{{ cte.typeCte + cte.numCte }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="montantVir" class="col-form-label">Montant</label>
+            <input type="number" name="montant" id="montantVir" class="form-control" ngModel required>
+          </div>
+          <div class="form-group">
+            <input type="submit" name="opererVir" id="opererVir" class="btn btn-primary btn-block" [disabled]="f.invalid">
+            <input type="button" (click)="cancelOperation()" class="btn btn-warning btn-block" value="Cancel" />
+          </div>
+        </form>
+      </div>
+
+      <!-- Extrait/operations du compte -->
+      <div *ngIf="client.booleans.opersCte">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Type d'opération</th>
+              <th scope="col">Numéro d'opération</th>
+              <th scope="col">Import d'opération</th>
+              <th scope="col">Libellé d'opération</th>
+              <th scope="col">Date d'opération</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let op of client.operations.operationsCte">
+              <td>{{ op.typeOperation }}</td>
+              <td><a (click)="operationDisplay(op)" style="cursor: pointer" class="text-info">{{ op.numOperation }}</a></td>
+              <td>{{ op.montant | number : '1.0-2'}}</td>
+              <td>{{ op.libelle }}</td>
+              <td>{{ op.dateOperation | date: 'dd-MM-yyyy HH:mm' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Affichage d'une operation -->
+      <div *ngIf="client.booleans.operDisplay">
+        <form #f="ngForm" (ngSubmit)="updateOperation(f.value)">
+          <div class="form-group">
+            <label for="typeOpD" class="col-form-label">Type d'operation</label>
+            <input type="text" name="typeOp" id="typeOpD" [ngModel]="client.operations.operationDisplay.typeOp" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="numOp" class="col-form-label">Numéro d'operation</label>
+            <input type="text" name="numOp" id="numOp" [ngModel]="client.operations.operationDisplay.numOperation" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="montantOp" class="col-form-label">Import d'operation</label>
+            <input type="numberOp" name="montant" id="montantOp" [ngModel]="client.operations.operationDisplay.montant" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="libelleOp" class="col-form-label">Libellé d'operation</label>
+            <input type="text" name="libelleOp" id="libelleOp" ngModel class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="dateOperation" class="col-form-label">Date d'operation</label>
+            <input type="text" name="dateOperation" id="dateOperation" [ngModel]="client.operations.operationDisplay.dateOperation | date : 'short'" class="form-control">
+          </div>
+          <button name="operations" value="Display operations" (toggle)="client.booleans.opersCte" class="btn btn-info btn-block">Operations</button>
+        </form>
+      </div>
+
     </div>
   </div>
 </div>

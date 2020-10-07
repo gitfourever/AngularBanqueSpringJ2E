@@ -19,15 +19,15 @@
           </div>
           <div class="form-group">
             <label for="passwordOld" class="col-form-label">Ancien password</label>
-            <input type="text" name="passwordOld" id="passwordOld" ngModel class="form-control" required>
+            <input type="password" name="passwordOld" id="passwordOld" ngModel class="form-control" required>
           </div>
           <div class="form-group">
             <label for="passwordNew" class="col-form-label">Nouveau password</label>
-            <input type="text" name="passwordNew" id="passwordNew" ngModel class="form-control" required>
+            <input type="password" name="passwordNew" id="passwordNew" ngModel class="form-control" required>
           </div>
           <div class="form-group">
             <label for="repasswordNew" class="col-form-label">Confirmation de password</label>
-            <input type="text" name="repasswordNew" id="repasswordNew" ngModel class="form-control" required>
+            <input type="password" name="repasswordNew" id="repasswordNew" ngModel class="form-control" required>
           </div>
           <div>
             <button type="submit" name="submit" class="btn btn-block btn-primary" [disabled]="f.invalid">Update password</button>

@@ -42,8 +42,8 @@ export class ComptesComponent implements OnInit {
   }
 
   getComptes() {
-    const hrefCompteShort = 'apiRest/comptesByClient/' + this.clientOnline.idClient;
-    this.compteService.comptes(hrefCompteShort).subscribe(value => {
+    const hrefCompteShort = 'apiRest/compte/comptesClient/' + this.clientOnline.idClient;
+    this.compteService.comptesBy_href(hrefCompteShort).subscribe(value => {
       // console.log(value);
       this.comptesClient = value;
     }, error => {

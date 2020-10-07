@@ -25,8 +25,7 @@ export class NewCompteComponent implements OnInit {
 
   addCompte(value) {
     this.compteService.addCompte(value).subscribe(cteData => {
-      // console.log(cteData);
-      this.router.navigateByUrl('/operations', {skipLocationChange: true});
+      window.location.reload();
     }, error => {
       console.log(error);
     });
@@ -35,16 +34,18 @@ export class NewCompteComponent implements OnInit {
   typeCompte(value) {
     if (value.typeCte === 'op') {
       this.showForm = false;
+      this.showBooleans();
     } else if (value.typeCte === 'CC') {
-      this.showForm = true;
-      this.showDecouvert = true;
-      this.showTaux = false;
+      this.showBooleans(true, true, false);
     } else if (value.typeCte === 'CE') {
-      this.showForm = true;
-      this.showDecouvert = false;
-      this.showTaux = true;
+      this.showBooleans(true, false, true);
     }
   }
 
+  showBooleans(form = false, decouvert = false, taux = false){
+    this.showForm = form;
+    this.showDecouvert = decouvert;
+    this.showTaux = taux;
+  }
 
 }
